@@ -25,20 +25,15 @@ stage('Test') {
 steps {
 sh 'mvn test'
 }
-post {
-always {
-junit '**/target/surefire-reports/*.xml'
-}
-}
 }
 stage ('Package') { 
 steps {
-sh 'mvn package'
+sh 'mvn cobertura:cobertura -Dcobertura.report.format=xml'
 }
 }
 stage ('Deploy War File') {
 steps {
-sh "cp /root/.jenkins/workspace/navneet/gameoflife-web/target/gameoflife.war /etc/apache-tomcat-8.5.61/webapps/"
+sh "mvn sonar:sonar"
 }
 }
 }
